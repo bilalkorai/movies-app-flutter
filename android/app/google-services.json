@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "439089832085",
+    "project_id": "pakflix-db806",
+    "storage_bucket": "pakflix-db806.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439089832085:android:93a76a13fbb5863a5cfb9c",
+        "android_client_info": {
+          "package_name": "com.example.pakflix"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsvtp8y4SGIuZpu87JfGzPTqd02hLdZiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
