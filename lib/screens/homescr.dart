@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 
 class homescr extends StatefulWidget {
   @override
@@ -10,7 +10,26 @@ class homescr extends StatefulWidget {
 }
 
 class _homescrState extends State<homescr> {
-  final ref = FirebaseDatabase.instance.ref('videoss');
+  List<String> _videoUrls = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVideos();
+  }
+
+  Future<void> _loadVideos() async {
+    final ListResult result = await FirebaseStorage.instance.ref('videos/').listAll();
+    final List<String> urls = await Future.wait(result.items.map((Reference ref) async {
+      return await ref.getDownloadURL();
+    }).toList());
+
+    setState(() {
+      _videoUrls = urls;
+      _isLoading = false;
+    });
+  }
 
   void menuselected(BuildContext context, String value) {
     switch (value) {
@@ -38,7 +57,7 @@ class _homescrState extends State<homescr> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 0),
                 child: Container(
                   height: 120,
                   width: 120,
@@ -49,87 +68,98 @@ class _homescrState extends State<homescr> {
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 30),
+              padding: const EdgeInsets.only(right: 5),
               child: PopupMenuButton(
-                  constraints: BoxConstraints(
-                      minHeight: 50,
-                      minWidth: 50,
-                      maxHeight: 70,
-                      maxWidth: 90
-                  ),
-                  padding: EdgeInsets.all(9),
-                  icon: Icon(Icons.menu, color: Colors.white,),
-                  onSelected: (String value) {
-                    menuselected(context, value);
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return [
-                      PopupMenuItem<String>(value: 'logout', child: Text("Logout"),)
-                    ];
-                  }
-              ),
-            )
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Expanded(
-              child: FirebaseAnimatedList(
-                query: ref,
-                itemBuilder: (context, snapshot, animation, index) {
-                  final videoUrl = snapshot.child('url').value.toString();
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: YoutubePlayerWidget(url: videoUrl),
-                  );
+                constraints: BoxConstraints(
+                    minHeight: 50, minWidth: 50, maxHeight: 70, maxWidth: 90),
+                padding: EdgeInsets.all(9),
+                icon: Icon(
+                  Icons.menu,
+                  color: Colors.white,
+                ),
+                onSelected: (String value) {
+                  menuselected(context, value);
+                },
+                itemBuilder: (BuildContext context) {
+                  return [
+                    PopupMenuItem<String>(
+                      value: 'logout',
+                      child: Text("Logout"),
+                    )
+                  ];
                 },
               ),
             ),
           ],
         ),
       ),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator(color: Colors.white,))
+          : Padding(
+        padding: const EdgeInsets.all(20),
+        child: PageView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: _videoUrls.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: ChewiePlayerWidget(url: _videoUrls[index]),
+            );
+          },
+        ),
+      ),
     );
   }
 }
 
-class YoutubePlayerWidget extends StatefulWidget {
+class ChewiePlayerWidget extends StatefulWidget {
   final String url;
 
-  const YoutubePlayerWidget({Key? key, required this.url}) : super(key: key);
+  const ChewiePlayerWidget({Key? key, required this.url}) : super(key: key);
 
   @override
-  _YoutubePlayerWidgetState createState() => _YoutubePlayerWidgetState();
+  _ChewiePlayerWidgetState createState() => _ChewiePlayerWidgetState();
 }
 
-class _YoutubePlayerWidgetState extends State<YoutubePlayerWidget> {
-  late YoutubePlayerController _controller;
+class _ChewiePlayerWidgetState extends State<ChewiePlayerWidget> {
+  late VideoPlayerController _videoPlayerController;
+  ChewieController? _chewieController;
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(widget.url)!,
-      flags: YoutubePlayerFlags(
-        autoPlay: false,
-        mute: false,
-      ),
+  Future<void> _initializeVideoPlayer() async {
+    _videoPlayerController = VideoPlayerController.network(widget.url);
+    await _videoPlayerController.initialize();
+    _chewieController = ChewieController(
+
+      videoPlayerController: _videoPlayerController,
+      aspectRatio: 16 / 9,
+      autoPlay: false,
+      looping: false,
     );
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _videoPlayerController.dispose();
+    _chewieController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return YoutubePlayer(
-      controller: _controller,
-      showVideoProgressIndicator: true,
+    return FutureBuilder(
+      future: _initializeVideoPlayer(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator(color: Colors.white,));
+        } else if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Check internet connection',style: TextStyle(color: Colors.white),));
+          }
+          return Chewie(controller: _chewieController!);
+        } else {
+          return Center(child: CircularProgressIndicator(color: Colors.white,));
+        }
+      },
     );
   }
 }

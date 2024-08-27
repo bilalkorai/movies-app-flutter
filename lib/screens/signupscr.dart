@@ -50,6 +50,9 @@ class _signupscrState extends State<signupscr> {
     });
     Get.offAll(str());
   }
+
+
+
   @override
   Widget build(BuildContext context) {
     return isloading ? Center(child: CircularProgressIndicator(),) : Scaffold(

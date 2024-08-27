@@ -20,6 +20,8 @@ class _forgotpState extends State<forgotp> {
     }
     print("pree");
   }
+
+
   TextEditingController email = TextEditingController();
   @override
   Widget build(BuildContext context) {
