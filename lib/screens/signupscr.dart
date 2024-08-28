@@ -57,146 +57,143 @@ class _signupscrState extends State<signupscr> {
   Widget build(BuildContext context) {
     return isloading ? Center(child: CircularProgressIndicator(),) : Scaffold(
       backgroundColor: Colors.black26,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top:60, left: 0),
-              child: Container(
-                  height: 100,
-                  width: 150,
-                  child: Image.asset("assets/images/11.png")
-              ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top:30, left: 0),
+            child: Container(
+                height: 80,
+                width: 230,
+                child: Image.asset("assets/images/11.png")
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8)
-                ),
-                height: 500,
-                width: double.infinity,
-
-
-                child: Card(
-                  color: Colors.white,
-                  child: Column(
+          ),
+          Expanded(
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(50), topRight: Radius.circular(50)),
+                color: Color(0xfff8fff7),
+              ),
+              child: ListView(
+                children: [
+                  SizedBox(height: 20,),
+                  Padding(
+                    padding: const EdgeInsets.only(left:0, top: 00),
+                    child: Center(child: Text("Signup", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),)),
+                  ),
+                  SizedBox(height: 30,),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    width: 300,
+                    height: 40,
+                    child: TextField(
+                      controller: name,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green)
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green)
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green)
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 15),
+                          hintText: "Name",
+                          hintStyle: TextStyle(color: Colors.green.shade300, fontSize: 13)
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    width: 300,
+                    height: 40,
+                    child: TextField(
+                      controller: email,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green)
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green)
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green)
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 15),
+                          hintText: "Email",
+                          hintStyle: TextStyle(color: Colors.green.shade300, fontSize: 13)
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    width: 300,
+                    height: 40,
+                    child: TextField(
+                      controller: password,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green)
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green)
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green)
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 15),
+                          hintText: "Password",
+                          hintStyle: TextStyle(color: Colors.green.shade300, fontSize: 13)
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20,),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    width: 300,
+                    height: 40,
+                    child: TextField(
+                      controller: confirmpass,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green)
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green)
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green)
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 15),
+                          hintText: "Confirm Pasword",
+                          hintStyle: TextStyle(color: Colors.green.shade300, fontSize: 13)
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30,),
+                  Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      width: 300,
+                      child: ElevatedButton(onPressed: (()=> confirm()), child: Text("Signup"), style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.green, width: 2),backgroundColor: Colors.black,foregroundColor: Colors.white,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))),)),
+                  Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 5,),
-                      Padding(
-                        padding: const EdgeInsets.only(left:0, top: 20),
-                        child: Text("Signup", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),),
-                      ),
-                      SizedBox(height: 20,),
-                      Container(
-                        width: 240,
-                        height: 40,
-                        child: TextField(
-                          controller: name,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.green)
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.green)
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.green)
-                              ),
-                              contentPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 15),
-                              hintText: "Name",
-                              hintStyle: TextStyle(color: Colors.green.shade300, fontSize: 13)
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 30,),
-                      Container(
-                        width: 240,
-                        height: 40,
-                        child: TextField(
-                          controller: email,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.green)
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.green)
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.green)
-                              ),
-                              contentPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 15),
-                              hintText: "Email",
-                              hintStyle: TextStyle(color: Colors.green.shade300, fontSize: 13)
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 30,),
-                      Container(
-                        width: 240,
-                        height: 40,
-                        child: TextField(
-                          controller: password,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.green)
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.green)
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.green)
-                              ),
-                              contentPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 15),
-                              hintText: "Password",
-                              hintStyle: TextStyle(color: Colors.green.shade300, fontSize: 13)
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 30,),
-                      Container(
-                        width: 240,
-                        height: 40,
-                        child: TextField(
-                          controller: confirmpass,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.green)
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.green)
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.green)
-                              ),
-                              contentPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 15),
-                              hintText: "Confirm Pasword",
-                              hintStyle: TextStyle(color: Colors.green.shade300, fontSize: 13)
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 30,),
-                      Container(
-                          width: 240,
-                          child: ElevatedButton(onPressed: (()=> confirm()), child: Text("Signup"), style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.green, width: 2),backgroundColor: Colors.black,foregroundColor: Colors.white,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))),)),
-                      Spacer(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text("Already have an account ", style: TextStyle(color: Colors.grey.shade500),),
-                          TextButton(onPressed: (){
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> loginscr()));
-                          }, child: Text("Login", style: TextStyle(color: Colors.green),))
-                        ],
-                      ),
-                      SizedBox(height: 10,)
+                      Text("Already have an account ", style: TextStyle(color: Colors.grey.shade500),),
+                      TextButton(onPressed: (){
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> loginscr()));
+                      }, child: Text("Login", style: TextStyle(color: Colors.green),))
                     ],
                   ),
-                ),
+                  SizedBox(height: 10,)
+                ],
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

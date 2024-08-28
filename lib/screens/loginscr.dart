@@ -1,5 +1,3 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,110 +33,125 @@ class _loginscrState extends State<loginscr> {
 
   TextEditingController email = TextEditingController();
   TextEditingController password= TextEditingController();
+  bool ispshow = true;
+  bool obsec = false;
+
+  hidepass(){
+    setState(() {
+      ispshow =! ispshow;
+      obsec =! obsec;
+    });
+  }
 
   _buildimage(){
     return Padding(
       padding: const EdgeInsets.only(top:10, left: 0),
-      child: Container(
-          height: 100,
-          width: 150,
-          child: Image.asset("assets/images/11.png")
+      child: SingleChildScrollView(
+        child: Container(
+            height: 80,
+            width: 230,
+            child: Image.asset("assets/images/11.png")
+        ),
       ),
     );
   }
 
   _buildform(){
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
+    return Expanded(
       child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8)
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 0),
-        height: 400,
+        height: MediaQuery.of(context).size.height,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(50), topRight: Radius.circular(50)),
+              color: Color(0xfff8fff7),
+            ),
+            child: ListView(
+              children: [
+                SizedBox(height: 20,),
+                Padding(
+                  padding: const EdgeInsets.only(left:0, top: 20),
+                  child: Center(child: Text("Login", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),)),
+                ),
+                SizedBox(height: 40,),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  width: 300,
+                  height: 40,
+                  child: TextField(
 
-        child: Card(
-          color: Colors.white,
-          child: Column(
-            children: [
-              SizedBox(height: 10,),
-              Padding(
-                padding: const EdgeInsets.only(left:0, top: 20),
-                child: Text("Login", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),),
-              ),
-              SizedBox(height: 30,),
-              Container(
-                width: 240,
-                height: 40,
-                child: TextField(
-                  controller: email,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green)
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green)
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green)
-                      ),
-                      contentPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 15),
-                      hintText: "Email",
-                      hintStyle: TextStyle(color: Colors.green.shade300, fontSize: 13)
+                    controller: email,
+                    decoration: InputDecoration(
+                      suffixIcon: Icon(Icons.email,color: Colors.black,),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green)
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green)
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green)
+                        ),
+                        contentPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 15),
+                        hintText: "Email",
+                        hintStyle: TextStyle(color: Colors.green.shade300, fontSize: 13)
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 30,),
-              Container(
-                width: 240,
-                height: 40,
-                child: TextField(
-                  controller: password,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green)
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green)
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green)
-                      ),
-                      contentPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 15),
-                      hintText: "Password",
-                      hintStyle: TextStyle(color: Colors.green.shade300, fontSize: 13)
+                SizedBox(height: 30,),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  width: 300,
+                  height: 40,
+                  child: TextField(
+                    obscureText: obsec,
+                    controller: password,
+                    decoration: InputDecoration(
+                      suffixIcon: IconButton(onPressed: (){
+                         hidepass();
+                      },icon: Icon(ispshow ? Icons.visibility_off : Icons.visibility, color: Colors.black,),),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green)
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green)
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.green)
+                        ),
+                        contentPadding: EdgeInsets.symmetric(vertical: 6,horizontal: 15),
+                        hintText: "Password",
+                        hintStyle: TextStyle(color: Colors.green.shade300, fontSize: 13)
+                    ),
                   ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 30),
-                    child: TextButton(onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> forgotp()));
-                    }, child: Text("Forgot Password",style: TextStyle(color: Colors.green, fontSize: 13),)),
-                  ),
-                ],
-              ),
-              Container(
-                  width: 240,
-                  child: ElevatedButton(onPressed: (()=>login()), child: Text("Login"), style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.green, width: 2),backgroundColor: Colors.black,foregroundColor: Colors.white,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))),)),
-              Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Not have an account ", style: TextStyle(color: Colors.grey.shade500),),
-                  TextButton(onPressed: (){
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> signupscr()));
-                  }, child: Text("SignUp", style: TextStyle(color: Colors.green),))
-                ],
-              ),
-              SizedBox(height: 10,)
-            ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 30),
+                      child: TextButton(onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> forgotp()));
+                      }, child: Text("Forgot Password",style: TextStyle(color: Colors.green, fontSize: 13),)),
+                    ),
+                  ],
+                ),
+                Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    width: 300,
+                    child: ElevatedButton(onPressed: (()=>login()), child: Text("Login"), style: ElevatedButton.styleFrom(side: BorderSide(color: Colors.green, width: 2),backgroundColor: Colors.black,foregroundColor: Colors.white,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0))),)),
+                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Not have an account ", style: TextStyle(color: Colors.grey.shade500),),
+                    TextButton(onPressed: (){
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> signupscr()));
+                    }, child: Text("SignUp", style: TextStyle(color: Colors.green),))
+                  ],
+                ),
+                SizedBox(height: 10,)
+              ],
+            ),
           ),
-        ),
-      ),
     );
   }
 
@@ -147,25 +160,25 @@ class _loginscrState extends State<loginscr> {
     return isloading ? Center(child: CircularProgressIndicator(color: Colors.white,),) : Scaffold(
       backgroundColor: Colors.black26,
       body: Center(
-        child: SingleChildScrollView(
-          child: LayoutBuilder(
-            builder: (context, BoxConstraints constraints) {
-              if(constraints.maxWidth > 1000){
-                return Row(
-                  children: [
-                    _buildimage(),
-                    _buildform()
-                  ],
-                );
-              }
-              return Column(
+        child: LayoutBuilder(
+          builder: (context, BoxConstraints constraints) {
+            if(constraints.maxWidth > 1000){
+              return Row(
                 children: [
                   _buildimage(),
                   _buildform()
                 ],
               );
             }
-          ),
+            return Column(
+              children: [
+                SizedBox(height: 20,),
+                _buildimage(),
+                SizedBox(height: 20,),
+                _buildform()
+              ],
+            );
+          }
         ),
       ),
     );
